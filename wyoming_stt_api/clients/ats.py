@@ -3,7 +3,6 @@ import time
 from typing import BinaryIO
 import requests
 import json
-from openai import OpenAI
 
 logger = logging.getLogger(__name__)
 

@@ -2,7 +2,7 @@ import argparse
 import sys
 from pathlib import Path
 
-from wyoming_stt_api.dependencies import openai_client
+from wyoming_stt_api.dependencies import ats_client
 
 
 def main():
@@ -16,7 +16,7 @@ def main():
         sys.exit(1)
 
     with open(args.file_path, "rb") as audio_file:
-        openai_client.speech_to_text(audio_file)
+        ats_client.speech_to_text(audio_file)
 
 
 if __name__ == "__main__":

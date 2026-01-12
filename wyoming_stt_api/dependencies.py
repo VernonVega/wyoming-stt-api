@@ -12,13 +12,13 @@ logging.basicConfig(
 )
 
 settings = Settings()
-openai_client = OpenAIClient(
-    api_key=settings.openai_api_key, model=settings.openai_model
+ats_client = ATSClient(
+    ats_url=settings.ats_url
 )
 server = AsyncTcpServer(settings.server_host, settings.server_port)
 
 
 def create_handler(reader: asyncio.StreamReader, writer: asyncio.StreamWriter):
     return WyomingEventHandler(
-        openai_client, settings.max_audio_duration_s, reader, writer
+        ats_client, settings.max_audio_duration_s, reader, writer
     )

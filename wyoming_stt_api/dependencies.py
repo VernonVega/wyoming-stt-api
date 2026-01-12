@@ -3,7 +3,7 @@ import logging
 
 from wyoming.server import AsyncTcpServer
 
-from wyoming_stt_api.clients.openai import OpenAIClient
+from wyoming_stt_api.clients.ats import ATSClient
 from wyoming_stt_api.services.wyoming import WyomingEventHandler
 from wyoming_stt_api.settings import Settings
 

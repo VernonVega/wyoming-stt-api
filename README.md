@@ -9,7 +9,7 @@ For now, only the [OpenAI API](https://platform.openai.com/docs/guides/speech-to
 This project uses [`uv`](https://docs.astral.sh/uv/getting-started/installation/) for package management.
 
 ```bash
-git clone https://github.com/gabrielwong159/wyoming-stt-api.git
+git clone https://github.com/VernonVega/wyoming-stt-api.git
 cd wyoming-stt-api/
 uv sync
 ```

@@ -2,6 +2,7 @@ import logging
 import time
 from typing import BinaryIO
 import requests
+import json
 from openai import OpenAI
 
 logger = logging.getLogger(__name__)
@@ -25,11 +26,12 @@ class ATSClient:
         start_time = time.time()
 
         files = {"file": file}
-			  response = requests.post(
-				  self.ats_url,
-				  files=files,
-				  timeout=10
-			  )
+		response = requests.post(
+			self.ats_url,
+			files=files,
+			timeout=10
+			)
+		result = parse_ats_response(response)
         
         logger.info(f"Time taken to transcribe: {time.time() - start_time:.2f}s")
         logger.info(f"Transcription: {result}")
@@ -38,3 +40,39 @@ class ATSClient:
     @property
     def model_name(self) -> str:
         return self._model
+
+	def parse_ats_response(text: str) -> str:
+    """Parse ATS response which may be:
+       * a JSON array of objects
+       * concatenated JSON objects without delimiters
+       * newline‑delimited JSON objects.
+    Returns the combined transcript string."""
+    transcripts = []
+    # Try to parse as JSON array first
+    try:
+        data = json.loads(text)
+        if isinstance(data, list):
+            for obj in data:
+                if isinstance(obj, dict) and "transcript" in obj:
+                    transcripts.append(str(obj["transcript"]))
+            return " ".join(transcripts).strip()
+    except json.JSONDecodeError:
+        pass
+
+    # Fallback: parse concatenated or newline‑delimited JSON objects
+    idx = 0
+    decoder = json.JSONDecoder()
+    while idx < len(text):
+        while idx < len(text) and text[idx].isspace():
+            idx += 1
+        if idx >= len(text):
+            break
+        try:
+            obj, end = decoder.raw_decode(text[idx:])
+            idx += end
+            if isinstance(obj, dict) and "transcript" in obj:
+                transcripts.append(str(obj["transcript"]))
+        except json.JSONDecodeError as e:
+            print(f"JSON parsing error at position {idx}: {e}")
+            break
+    return " ".join(transcripts).strip()

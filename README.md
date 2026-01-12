@@ -14,9 +14,7 @@ cd wyoming-stt-api/
 uv sync
 ```
 
-Visit the [OpenAI developer platform](https://platform.openai.com/docs/overview)
-to get an API key. You will need to place your API key in a `.env` file:
-
+Put your speech recognition service url to env
 ```
 ATS_URL=someurl
 ```

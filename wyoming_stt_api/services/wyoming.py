@@ -9,7 +9,7 @@ from wyoming.event import Event
 from wyoming.info import AsrModel, AsrProgram, Attribution, Describe, Info
 from wyoming.server import AsyncEventHandler
 
-from wyoming_stt_api.clients.openai import OpenAIClient
+from wyoming_stt_api.clients.ats import ATSClient
 
 logger = logging.getLogger(__name__)
 
@@ -17,13 +17,13 @@ logger = logging.getLogger(__name__)
 class WyomingEventHandler(AsyncEventHandler):
     def __init__(
         self,
-        openai_client: OpenAIClient,
+        ats_client: ATSClient,
         max_audio_duration_s: int,
         reader: asyncio.StreamReader,
         writer: asyncio.StreamWriter,
     ):
         super().__init__(reader, writer)
-        self._openai_client = openai_client
+        self._ats_client = ats_client
         self._max_audio_duration_s = max_audio_duration_s
         self._wave_file: wave.Wave_write | None = None
         self._buffer: BytesIO = BytesIO()
@@ -82,7 +82,7 @@ class WyomingEventHandler(AsyncEventHandler):
         self._wave_file = None
 
     async def _transcribe_buffer(self):
-        text = self._openai_client.speech_to_text(self._buffer, file_extension="wav")
+        text = self._ats_client.speech_to_text(self._buffer, file_extension="wav")
         await self.write_event(Transcript(text=text).event())
 
     async def _send_info(self):
@@ -94,17 +94,17 @@ class WyomingEventHandler(AsyncEventHandler):
                     version=None,
                     attribution=Attribution(
                         name="wyoming-stt-api",
-                        url="https://github.com/gabrielwong159/wyoming-stt-api",
+                        url="https://github.com/VernonVega/wyoming-stt-api",
                     ),
                     installed=True,
                     models=[
                         AsrModel(
-                            name=self._openai_client.model_name,
+                            name=self._ats_client.model_name,
                             description=None,
                             version=None,
                             attribution=Attribution(
-                                name="OpenAI",
-                                url="https://platform.openai.com/docs/models",
+                                name="ATS",
+                                url="https://jack-da-shadow.org/",
                             ),
                             installed=True,
                             languages=["en"],

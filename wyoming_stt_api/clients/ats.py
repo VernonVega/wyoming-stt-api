@@ -40,7 +40,7 @@ class ATSClient:
     def model_name(self) -> str:
         return self._model
 
-	def parse_ats_response(text: str) -> str:
+    def parse_ats_response(text: str) -> str:
     """Parse ATS response which may be:
        * a JSON array of objects
        * concatenated JSON objects without delimiters

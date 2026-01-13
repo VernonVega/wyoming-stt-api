@@ -72,6 +72,7 @@ class WyomingEventHandler(AsyncEventHandler):
             raise ValueError("Audio not started")
 
         self._wave_file.writeframes(chunk.audio)
+        logger.info(f"Audio chunk added. Wave file size: {len(self._wave_file)} bytes")
 
     def _stop_audio(self):
         if self._wave_file is None:
@@ -82,6 +83,7 @@ class WyomingEventHandler(AsyncEventHandler):
         self._wave_file = None
 
     async def _transcribe_buffer(self):
+        logger.info(f"Buffer size: {len(self._buffer)} bytes")
         text = self._ats_client.speech_to_text(self._buffer, file_extension="wav")
         await self.write_event(Transcript(text=text).event())
 

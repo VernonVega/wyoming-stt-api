@@ -8,8 +8,8 @@ logger = logging.getLogger(__name__)
 
 
 class ATSClient:
-    def __init__(self, url: str):
-        self.ats_url = url 
+    def __init__(self, ats_url: str):
+        self.ats_url = ats_url 
 
     def speech_to_text(
         self, audio_file: BinaryIO, file_extension: str | None = None

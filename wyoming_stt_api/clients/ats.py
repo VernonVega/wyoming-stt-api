@@ -19,7 +19,7 @@ class ATSClient:
         # to infer the file type, so we pass in a dummy file name.
         file: BinaryIO | tuple[str, BinaryIO]
         if file_extension is not None:
-            file = (f"dummy.{file_extension}", audio_file, "audio/wav")
+            file = (f"dummy.{file_extension}", audio_file)
         else:
             file = audio_file
         start_time = time.time()

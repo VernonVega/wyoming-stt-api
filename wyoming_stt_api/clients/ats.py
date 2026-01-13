@@ -22,6 +22,8 @@ class ATSClient:
             file = (f"dummy.{file_extension}", audio_file)
         else:
             file = audio_file
+
+        print(f"Buffer size: {len(file)} bytes")
         start_time = time.time()
 
         files = {"file": file}

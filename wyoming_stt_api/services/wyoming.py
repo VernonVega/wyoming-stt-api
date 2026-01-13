@@ -27,7 +27,6 @@ class WyomingEventHandler(AsyncEventHandler):
         self._max_audio_duration_s = max_audio_duration_s
         self._wave_file: wave.Wave_write | None = None
         self._buffer: BytesIO = BytesIO()
-        self._counter: int = 0
 
     async def handle_event(self, event: Event) -> bool:
         if AudioStart.is_type(event.type):
@@ -67,15 +66,12 @@ class WyomingEventHandler(AsyncEventHandler):
         self._wave_file.setframerate(start.rate)
         self._wave_file.setsampwidth(start.width)
         self._wave_file.setnchannels(start.channels)
-        self._counter = 0
 
     def _add_audio_chunk(self, chunk: AudioChunk):
         if self._wave_file is None:
             raise ValueError("Audio not started")
 
         self._wave_file.writeframes(chunk.audio)
-        self._counter = self._counter + 1
-        logger.info(f"Audio chunk added. Counter: {self._counter}")
 
     def _stop_audio(self):
         if self._wave_file is None:
@@ -86,8 +82,7 @@ class WyomingEventHandler(AsyncEventHandler):
         self._wave_file = None
 
     async def _transcribe_buffer(self):
-        logger.info(f"Buffer size: {len(self._buffer.getvalue())} bytes")
-        text = self._ats_client.speech_to_text(self._buffer, file_extension="wav")
+        text = self._ats_client.speech_to_text(self._buffer.getvalue(), file_extension="wav")
         await self.write_event(Transcript(text=text).event())
 
     async def _send_info(self):

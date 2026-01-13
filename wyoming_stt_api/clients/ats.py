@@ -12,16 +12,16 @@ class ATSClient:
         self.ats_url = ats_url 
 
     def speech_to_text(
-        self, audio_file: BinaryIO, file_extension: str | None = None
+        self, audio_file: bytes, file_extension: str | None = None
     ) -> str:
         # A file extension is needed for cases where audio_file does not have a
         # name, such as when using in-memory files. The OpenAI SDK needs a name
         # to infer the file type, so we pass in a dummy file name.
-        file: BinaryIO | tuple[str, BinaryIO]
-        if file_extension is not None:
-            file = (f"dummy.{file_extension}", audio_file)
-        else:
-            file = audio_file
+        file: bytes #| tuple[str, bytes]
+        #if file_extension is not None:
+        #    file = (f"dummy.{file_extension}", audio_file)
+        #else:
+        file = audio_file
 
         logger.info(f"File size: {len(file)} bytes")
         start_time = time.time()

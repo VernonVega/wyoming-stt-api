@@ -90,8 +90,8 @@ class WyomingEventHandler(AsyncEventHandler):
             asr=[
                 AsrProgram(
                     name="Speech-to-text API",
-                    description=None,
-                    version=None,
+                    description="custom stt service",
+                    version="1.0",
                     attribution=Attribution(
                         name="wyoming-stt-api",
                         url="https://github.com/VernonVega/wyoming-stt-api",
@@ -100,14 +100,14 @@ class WyomingEventHandler(AsyncEventHandler):
                     models=[
                         AsrModel(
                             name=self._ats_client.model_name,
-                            description=None,
-                            version=None,
+                            description="russian stt model v3_e2e_rnnt",
+                            version="1.0",
                             attribution=Attribution(
                                 name="ATS",
-                                url="https://jack-da-shadow.org/",
+                                url="https://github.com/VernonVega/wyoming-stt-api",
                             ),
                             installed=True,
-                            languages=["en"],
+                            languages=["ru"],
                         )
                     ],
                 )

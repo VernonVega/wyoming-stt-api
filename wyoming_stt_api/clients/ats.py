@@ -32,7 +32,7 @@ class ATSClient:
             files=files,
             timeout=10
             )
-        result = self.parse_ats_response(response)
+        result = self.parse_ats_response(response.text)
         
         logger.info(f"Time taken to transcribe: {time.time() - start_time:.2f}s")
         logger.info(f"Transcription: {result}")

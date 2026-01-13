@@ -38,7 +38,7 @@ class ATSClient:
 
     @property
     def model_name(self) -> str:
-        return self._model
+        return "gigaam_refined"
 
     def parse_ats_response(text: str) -> str:
         """Parse ATS response which may be:

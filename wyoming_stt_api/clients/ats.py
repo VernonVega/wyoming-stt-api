@@ -23,7 +23,7 @@ class ATSClient:
         else:
             file = audio_file
 
-        logger.info(f"Buffer size: {len(file)} bytes")
+        logger.info(f"Buffer size: {len(audio_file)} bytes")
         start_time = time.time()
 
         files = {"file": file}
